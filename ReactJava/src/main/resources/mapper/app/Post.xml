@@ -4,27 +4,40 @@
 <mapper namespace="com.ReactJava.mapper.PostMapper">
 
 	<select id="getPostList" parameterType="Map" resultType="Map">
-		SELECT POST_ID AS postId
-			 , USER_ID AS userId
-			 , TITLE AS title
-			 , VIEW_COUNT AS viewCount
-			 , DATE_FORMAT(CREATE_AT,'%Y/%m/%d') AS createAt
-		FROM POSTS
+		SELECT P.POST_ID AS postId
+			 , P.USER_ID AS userId
+			 , P.TITLE AS title
+			 , P.CONTENT AS content
+			 , P.CATEGORY AS category
+			 , C.CODE_NM AS categoryNm
+			 , P.VIEW_COUNT AS viewCount
+			 , DATE_FORMAT(P.CREATE_AT,'%Y.%m.%d') AS createAt
+		FROM POSTS P
+		INNER JOIN CODE C
+			ON P.CATEGORY = C.CODE
+			AND C.CODE_DIV = 'CATE'
+		WHERE 1=1
+		<if test='postId != null and !"".equals(postId)'>
+			AND P.POST_ID = #{postId}
+		</if>
+		<if test='category != null and !"".equals(category)'>
+			AND P.CATEGORY = #{category}
+		</if>
 		<if test='orderType != null and !"".equals(orderType)'>
 			<if test='"1".equals(orderType)'>
-				ORDER BY VIEW_COUNT DESC
+				ORDER BY P.VIEW_COUNT DESC
 			</if>
 			<if test='"2".equals(orderType)'>
-				ORDER BY CREATE_AT ASC
+				ORDER BY P.CREATE_AT ASC
 			</if>
 			<if test='"3".equals(orderType)'>
-				ORDER BY CREATE_AT DESC
+				ORDER BY P.CREATE_AT DESC
 			</if>
 			<if test='"4".equals(orderType)'>
-				ORDER BY TITLE ASC
+				ORDER BY P.TITLE ASC
 			</if>
 			<if test='"5".equals(orderType)'>
-				ORDER BY TITLE DESC
+				ORDER BY P.TITLE DESC
 			</if>
 		</if>
 	</select>
@@ -37,12 +50,17 @@
 		  	, CONTENT
 		  	, CATEGORY
 		) VALUES (
-			(SELECT NVL(MAX(POST_ID) + 1, 1) FROM POSTS  AS SEQ)
+			(SELECT NVL(MAX(POST_ID) + 1, 1) FROM POSTS AS SEQ)
 			, #{userId}
 			, #{title}
 			, #{content}
 			, #{category}
 		)
 	</insert>
+	
+	<update id="viewCountUp" parameterType="Map">
+		UPDATE POSTS SET VIEW_COUNT = VIEW_COUNT + 1
+		WHERE POST_ID = #{postId}
+	</update>
 	
 </mapper>

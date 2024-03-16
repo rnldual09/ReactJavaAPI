@@ -10,22 +10,22 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.ReactJava.servlce.CommService;
+import com.ReactJava.servlce.CodeService;
 
 
-@Controller("commController")
-public class CommController {
+@Controller("codeController")
+public class CodeController {
 
 	@Autowired
-	private CommService commService;
+	private CodeService codeService;
 	
-	@PostMapping(value = "/comm/getCodeList.do")
+	@PostMapping(value = "/code/getCodeList.do")
 	@ResponseBody
 	public Map<String, Object> getCodeList(@RequestBody Map<String,Object> paramMap) throws Exception {
 		
 		Map<String,Object> resultMap = new HashMap<>();
 		
-		List<Map<String,String>> codeList = commService.getCodeList(paramMap);
+		List<Map<String,String>> codeList = codeService.getCodeList(paramMap);
 		resultMap.put("codeList", codeList);
 		
 		return resultMap;

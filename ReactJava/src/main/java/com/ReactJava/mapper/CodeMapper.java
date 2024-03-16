@@ -6,7 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
-public interface CommMapper {
+public interface CodeMapper {
 
 	// 코드리스트 가져오기
 	List<Map<String, String>> getCodeList(Map<String, Object> paramMap);

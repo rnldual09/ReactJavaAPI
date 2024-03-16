@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.ReactJava.mapper.CommMapper">
+<mapper namespace="com.ReactJava.mapper.CodeMapper">
 
 	<select id="getCodeList" parameterType="Map" resultType="Map">
 		SELECT CODE 	AS code

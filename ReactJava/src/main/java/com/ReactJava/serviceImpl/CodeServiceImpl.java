@@ -6,18 +6,18 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ReactJava.mapper.CommMapper;
-import com.ReactJava.servlce.CommService;
+import com.ReactJava.mapper.CodeMapper;
+import com.ReactJava.servlce.CodeService;
 
-@Service("commService")
-public class CommServiceImpl implements CommService {
+@Service("codeService")
+public class CodeServiceImpl implements CodeService {
 
 	@Autowired
-	private CommMapper commMapper;
+	private CodeMapper codeMapper;
 
 	@Override
 	public List<Map<String, String>> getCodeList(Map<String, Object> paramMap) throws Exception {
-		return commMapper.getCodeList(paramMap);
+		return codeMapper.getCodeList(paramMap);
 	}
 	
 

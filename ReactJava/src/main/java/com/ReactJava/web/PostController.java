@@ -42,4 +42,28 @@ public class PostController {
 		
 		return resultMap;
 	}
+	
+	@PostMapping(value = "/post/viewCountUp.do")
+	@ResponseBody
+	public Map<String, Object> viewCountUp(@RequestBody Map<String,Object> paramMap) throws Exception {
+		
+		Map<String,Object> resultMap = new HashMap<>();
+		
+		int cnt = postService.viewCountUp(paramMap);
+		resultMap.put("cnt", cnt);
+		
+		return resultMap;
+	}
+	
+	@PostMapping(value = "/post/getPostInfo.do")
+	@ResponseBody
+	public Map<String, Object> getPostInfo(@RequestBody Map<String,Object> paramMap) throws Exception {
+		
+		Map<String,Object> resultMap = new HashMap<>();
+		
+		Map<String,String> postInfo = postService.getPostInfo(paramMap);
+		resultMap.put("postInfo", postInfo);
+		
+		return resultMap;
+	}
 }

@@ -14,4 +14,7 @@ public interface PostMapper {
 	// 게시글 등록 및 수정
 	int editPost(Map<String, Object> paramMap);
 
+	// 게시글 조회수 +
+	int viewCountUp(Map<String, Object> paramMap);
+
 }
