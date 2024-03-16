@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ReactJava.mapper.PostMapper">
+
+	<select id="getPostList" parameterType="Map" resultType="Map">
+		SELECT POST_ID AS postId
+			 , USER_ID AS userId
+			 , TITLE AS title
+			 , VIEW_COUNT AS viewCount
+			 , DATE_FORMAT(CREATE_AT,'%Y/%m/%d') AS createAt
+		FROM POSTS
+		<if test='orderType != null and !"".equals(orderType)'>
+			<if test='"1".equals(orderType)'>
+				ORDER BY VIEW_COUNT DESC
+			</if>
+			<if test='"2".equals(orderType)'>
+				ORDER BY CREATE_AT ASC
+			</if>
+			<if test='"3".equals(orderType)'>
+				ORDER BY CREATE_AT DESC
+			</if>
+			<if test='"4".equals(orderType)'>
+				ORDER BY TITLE ASC
+			</if>
+			<if test='"5".equals(orderType)'>
+				ORDER BY TITLE DESC
+			</if>
+		</if>
+	</select>
+	
+	<insert id="editPost" parameterType="Map">
+		INSERT INTO POSTS (
+			POST_ID
+		 	, USER_ID
+		  	, TITLE
+		  	, CONTENT
+		  	, CATEGORY
+		) VALUES (
+			(SELECT NVL(MAX(POST_ID) + 1, 1) FROM POSTS  AS SEQ)
+			, #{userId}
+			, #{title}
+			, #{content}
+			, #{category}
+		)
+	</insert>
+	
+</mapper>
