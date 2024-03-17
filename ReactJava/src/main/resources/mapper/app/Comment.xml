@@ -23,18 +23,23 @@
 
 	<insert id="editComment" parameterType="Map">
 		INSERT INTO COMMENTS (
-			COMMENT_ID
-		 	, POST_ID
+			POST_ID
+		 	, COMMENT_ID
 			, USER_ID
 			, PARENT_COMMENT_ID
 			, COMMENT
 		) VALUES (
-			(SELECT NVL(MAX(COMMENT_ID) + 1, 1) FROM COMMENTS AS SEQ)
-			, #{postId}
+			#{postId}
+			, (SELECT NVL(MAX(COMMENT_ID) + 1, 1) FROM COMMENTS AS SEQ WHERE POST_ID = #{postId})
 			, #{userId}
 			, #{parentCommentId}
 			, #{comment}
 		)
 	</insert>
+	
+	<delete id="delComent" parameterType="Map">
+		DELETE FROM COMMENTS
+		WHERE POST_ID = #{postId}
+	</delete>
 	
 </mapper>

@@ -17,6 +17,11 @@ public interface PostService {
 	// 게시글 정보 가져오기
 	Map<String, String> getPostInfo(Map<String, Object> paramMap) throws Exception;
 
+	// 하이라이트 게시글리스트
+	Map<String, Object> getHighPostList() throws Exception;
+
+	int delPost(Map<String,Object> paramMap) throws Exception;
+
 	
 
 }

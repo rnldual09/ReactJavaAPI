@@ -66,4 +66,29 @@ public class PostController {
 		
 		return resultMap;
 	}
+	
+	@PostMapping(value = "/post/getHighPostList.do")
+	@ResponseBody
+	public Map<String, Object> getHighPostList(@RequestBody Map<String,Object> paramMap) throws Exception {
+		
+		Map<String,Object> resultMap = new HashMap<>();
+		
+		Map<String,Object> highPost = postService.getHighPostList();
+		resultMap.put("highCommentPostList", highPost.get("highCommentPostList"));
+		resultMap.put("highViewCountPostList", highPost.get("highViewCountPostList"));
+		
+		return resultMap;
+	}
+	
+	@PostMapping(value = "/post/delPost.do")
+	@ResponseBody
+	public Map<String, Object> delPost(@RequestBody Map<String,Object> paramMap) throws Exception {
+		
+		Map<String,Object> resultMap = new HashMap<>();
+		
+		int cnt = postService.delPost(paramMap);
+		resultMap.put("cnt", cnt);
+		
+		return resultMap;
+	}
 }

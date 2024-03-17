@@ -14,4 +14,7 @@ public interface CommentMapper {
 	// 댓글작성
 	int editComment(Map<String, Object> paramMap);
 
+	// 댓글삭제
+	int delComent(Map<String, Object> paramMap);
+
 }

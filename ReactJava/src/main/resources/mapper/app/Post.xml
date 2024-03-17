@@ -11,6 +11,7 @@
 			 , P.CATEGORY AS category
 			 , C.CODE_NM AS categoryNm
 			 , P.VIEW_COUNT AS viewCount
+			 , (SELECT COUNT(*) FROM COMMENTS WHERE POST_ID = P.POST_ID) AS commentCnt
 			 , DATE_FORMAT(P.CREATE_AT,'%Y.%m.%d') AS createAt
 		FROM POSTS P
 		INNER JOIN CODE C
@@ -42,7 +43,13 @@
 		</if>
 	</select>
 	
-	<insert id="editPost" parameterType="Map">
+	<update id="editPost" parameterType="Map">
+		UPDATE POSTS SET TITLE = #{title}, CONTENT = #{content}, CATEGORY = #{category}
+		WHERE POST_ID = #{postId} 
+		AND USER_ID = #{userId}
+	</update>
+	
+	<insert id="insertPost" parameterType="Map">
 		INSERT INTO POSTS (
 			POST_ID
 		 	, USER_ID
@@ -62,5 +69,45 @@
 		UPDATE POSTS SET VIEW_COUNT = VIEW_COUNT + 1
 		WHERE POST_ID = #{postId}
 	</update>
+	
+	<select id="getHighPostIdList">
+		SELECT POST_ID AS postId
+			 , TYPE    AS type
+		FROM
+		(
+			(
+				SELECT POST_ID
+					 , 'comment' AS TYPE
+				FROM COMMENTS
+				GROUP BY POST_ID
+				ORDER BY COUNT(*) DESC
+				LIMIT 2
+			)
+			UNION ALL
+			(
+				SELECT A.POST_ID
+					 , 'viewCount' AS TYPE
+				FROM POSTS A
+				LEFT OUTER JOIN
+				(
+					SELECT POST_ID
+					FROM COMMENTS
+					GROUP BY POST_ID
+					ORDER BY COUNT(*) DESC
+					LIMIT 2
+				) B
+					ON A.POST_ID = B.POST_ID
+				WHERE B.POST_ID IS NULL
+				AND VIEW_COUNT != 0
+				ORDER BY VIEW_COUNT DESC
+				LIMIT 2
+			)
+		) TOT
+	</select>
+	
+	<delete id="delPost" parameterType="Map">
+		DELETE FROM POSTS
+		WHERE POST_ID = #{postId}
+	</delete>
 	
 </mapper>
